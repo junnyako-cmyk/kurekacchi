@@ -801,31 +801,23 @@
 
   <script>
     const STORAGE_KEY = "card-picker-state-v1";
-    const RETIRED_CARDS_MIGRATION_KEY = "card-picker-retired-cards-v1";
-    const retiredCardKeys = [
-      "marriottbonvoyamexプレミアム",
-      "marriottbonvoypremium",
-      "amexマリオットボンボイプレミアム",
-      "アメックスマリオットボンボイプレミアム",
-      "マリオットボンボイプレミアム",
-      "マリオットボンヴォイプレミアム"
-    ];
+    const DEFAULT_CARD_MIGRATION_KEY = "card-picker-default-premium-v1";
 
     const defaultCards = [
       {
-        name: "Marriott Bonvoy AMEX（19日締め）",
+        name: "Marriott Bonvoy AMEX プレミアム（19日締め）",
         closeDay: 19,
         payMonthOffset: 1,
         payDay: 10,
         pointValue: 1,
-        rewardRate: 2,
-        taxRewardRate: 0.5,
-        gasolineRewardRate: 0.5,
-        etcRewardRate: 0.5,
+        rewardRate: 3,
+        taxRewardRate: 0,
+        gasolineRewardRate: 0,
+        etcRewardRate: 0,
         taxFeeRate: 0.82,
         limit: 0,
         used: 0,
-        memo: "多いパターン: 19日締め・翌月10日払い。ほかに1日前後締め・当月21日払い、5日前後締め・当月26日払いがあります。事業用支払いとみなされるとポイント対象外になる場合があります。"
+        memo: "ユーザー補足: ボンボイプレミアムは通常100円=3pt、税金・ガソリン・ETCは0ptとして入力しています。事業用支払いとみなされるとポイント対象外になる場合があります。締め/支払いは多いパターンの19日締め・翌月10日払いで入力しています。"
       }
     ];
 
@@ -1099,7 +1091,7 @@
     init();
 
     function init() {
-      const migrated = applyRetiredCardMigration();
+      const migrated = applyDefaultPremiumMigration();
       if (!elements.txDate.value) {
         elements.txDate.value = toInputDate(new Date());
       }
@@ -1241,17 +1233,14 @@
       localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
     }
 
-    function applyRetiredCardMigration() {
-      if (localStorage.getItem(RETIRED_CARDS_MIGRATION_KEY) === "done") return false;
-      const before = state.cards.length;
-      state.cards = state.cards.filter((card) => !isRetiredCardName(card.name));
-      localStorage.setItem(RETIRED_CARDS_MIGRATION_KEY, "done");
-      return state.cards.length !== before;
-    }
-
-    function isRetiredCardName(name) {
-      const normalized = normalizeCardName(name);
-      return retiredCardKeys.some((key) => normalized.includes(normalizeCardName(key)));
+    function applyDefaultPremiumMigration() {
+      if (localStorage.getItem(DEFAULT_CARD_MIGRATION_KEY) === "done") return false;
+      localStorage.setItem(DEFAULT_CARD_MIGRATION_KEY, "done");
+      if (state.cards.length !== 1) return false;
+      const normalized = normalizeCardName(state.cards[0].name);
+      if (!normalized.includes(normalizeCardName("Marriott Bonvoy AMEX（19日締め）"))) return false;
+      state.cards = defaultCards.map(cloneCard);
+      return true;
     }
 
     function renderPresetSelect() {
