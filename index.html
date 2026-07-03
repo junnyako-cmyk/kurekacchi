@@ -4,6 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>クレカッち</title>
+  <meta name="description" content="決済日・金額・種別から、クレジットカードごとの支払い日数とポイント見込みを比べるツールです。">
+  <meta name="theme-color" content="#0a84ff">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="クレカッち">
+  <link rel="manifest" href="./manifest.webmanifest">
+  <link rel="icon" href="./app-icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="./app-icon.svg">
   <style>
     :root {
       color-scheme: light;
@@ -1089,6 +1096,7 @@
     let state = loadState();
 
     init();
+    registerServiceWorker();
 
     function init() {
       const migrated = applyDefaultPremiumMigration();
@@ -1720,6 +1728,13 @@
       link.download = "card-picker-settings.json";
       link.click();
       URL.revokeObjectURL(url);
+    }
+
+    function registerServiceWorker() {
+      if (!("serviceWorker" in navigator)) return;
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js").catch(() => {});
+      });
     }
   </script>
 </body>
