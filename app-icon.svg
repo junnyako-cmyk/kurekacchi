@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-label="クレカッち">
+  <rect width="512" height="512" rx="112" fill="#f5f7fb"/>
+  <rect x="72" y="96" width="368" height="272" rx="44" fill="#ffffff"/>
+  <rect x="72" y="96" width="368" height="272" rx="44" fill="none" stroke="#d8e0ea" stroke-width="8"/>
+  <rect x="104" y="140" width="304" height="54" rx="18" fill="#0a84ff"/>
+  <rect x="112" y="266" width="116" height="34" rx="17" fill="#35c2a7"/>
+  <rect x="252" y="266" width="112" height="34" rx="17" fill="#a76a18"/>
+  <circle cx="378" cy="326" r="38" fill="#0a84ff"/>
+  <text x="158" y="334" fill="#1d1d1f" font-family="-apple-system, BlinkMacSystemFont, 'Hiragino Sans', Meiryo, sans-serif" font-size="128" font-weight="800">ク</text>
+</svg>
